@@ -51,6 +51,9 @@
   .modal iframe { display:block;width:min(100%,1100px);aspect-ratio:16/9;border:0;background:#000;margin:auto; }
   .modal-close { position:absolute;right:0;bottom:calc(100% + 12px);border:1px solid #aaa;background:#111;color:#fff;padding:10px 14px; }
   .work-thumb { cursor:pointer; }
+  .work-thumb .work-video { display:none !important; }
+  .work-thumb .play-center { padding:0;cursor:pointer; }
+  .work-media-upload { font-size:10px; }
   .work-links { display:flex;gap:8px;flex-wrap:wrap;margin-top:10px; }
   .work-links a { display:inline-flex;align-items:center;font:10px monospace;border:1px solid #555;border-radius:999px;padding:8px 12px;color:var(--fg); }
   .settings-panel { position:fixed;z-index:31;right:18px;bottom:68px;background:#151515;border:1px solid #555;padding:14px;display:grid;gap:10px;color:#eee;font:11px monospace; }
@@ -212,11 +215,11 @@
     <div class="showreel-wrap">
     <div class="video-frame" id="showreelFrame">
         <div class="placeholder" id="showreelPlaceholder"><div>SHOWREEL VIDEO</div><div class="note">16:9 VIDEO PLACEHOLDER</div></div>
-        <img id="showreelImage" class="hidden" alt="쇼릴 대표 이미지"><video id="showreelVideo" muted autoplay loop playsinline class="hidden"></video><button class="play-center" id="showreelPlay" aria-label="쇼릴 영상 재생">▶</button>
+        <img id="showreelImage" class="hidden" alt="쇼릴 썸네일"><video id="showreelVideo" controls playsinline preload="metadata" class="hidden"></video><button type="button" class="play-center" id="showreelPlay" aria-label="쇼릴 영상 재생">▶</button>
       </div>
       <div class="media-actions">
-        <label class="upload-label">＋ 쇼릴 이미지 넣기<input type="file" id="showreelImageUpload" accept="image/*"></label>
-        <label class="upload-label">＋ 쇼릴 영상 넣기<input type="file" id="showreelUpload" accept="video/*"></label>
+        <label class="upload-label">＋ 쇼릴 썸네일 이미지<input type="file" id="showreelImageUpload" accept="image/*"></label>
+        <label class="upload-label">＋ 쇼릴 영상 파일<input type="file" id="showreelUpload" accept="video/*"></label>
         <button class="small-btn" id="showreelLinkSet">외부 링크 설정</button><a class="small-btn hidden" id="showreelExternal" href="#" target="_blank" rel="noopener">외부 영상 보기 ↗</a>
         <button class="small-btn" id="removeShowreel">영상 비우기</button>
       </div>
@@ -244,28 +247,28 @@
     </div>
     <div class="works-grid" id="worksGrid">
       <article class="work-card" data-category="editing">
-        <div class="work-thumb"><div class="thumb-placeholder">WORK 01<br>이미지 / 영상 넣기</div><img class="work-image hidden" alt=""><video class="work-video hidden" muted autoplay loop playsinline></video></div>
+        <div class="work-thumb"><div class="thumb-placeholder">WORK 01<br>썸네일 이미지를 넣어주세요</div><img class="work-image hidden" alt="작품 썸네일"><video class="work-video hidden" controls playsinline preload="metadata"></video></div>
         <div class="work-meta"><span contenteditable="true" data-edit>VIDEO EDITING</span><span contenteditable="true" data-edit>2026</span></div>
         <h3 contenteditable="true" data-edit>Project Title 01</h3><p contenteditable="true" data-edit>작품에 대한 간단한 설명을 적어주세요.</p>
-        <div class="media-actions"><label class="upload-label">＋ 미디어 넣기<input type="file" class="work-upload" accept="image/*,video/*"></label><button class="small-btn delete-work">카드 삭제</button></div>
+        <div class="media-actions"><button type="button" class="small-btn delete-work">카드 삭제</button></div>
       </article>
       <article class="work-card" data-category="motion">
-        <div class="work-thumb"><div class="thumb-placeholder">WORK 02<br>이미지 / 영상 넣기</div><img class="work-image hidden" alt=""><video class="work-video hidden" muted autoplay loop playsinline></video></div>
+        <div class="work-thumb"><div class="thumb-placeholder">WORK 02<br>썸네일 이미지를 넣어주세요</div><img class="work-image hidden" alt="작품 썸네일"><video class="work-video hidden" controls playsinline preload="metadata"></video></div>
         <div class="work-meta"><span contenteditable="true" data-edit>MOTION GRAPHICS</span><span contenteditable="true" data-edit>2026</span></div>
         <h3 contenteditable="true" data-edit>Project Title 02</h3><p contenteditable="true" data-edit>사용 프로그램, 담당 역할, 작업 의도를 적어주세요.</p>
-        <div class="media-actions"><label class="upload-label">＋ 미디어 넣기<input type="file" class="work-upload" accept="image/*,video/*"></label><button class="small-btn delete-work">카드 삭제</button></div>
+        <div class="media-actions"><button type="button" class="small-btn delete-work">카드 삭제</button></div>
       </article>
       <article class="work-card" data-category="ad">
-        <div class="work-thumb"><div class="thumb-placeholder">WORK 03<br>이미지 / 영상 넣기</div><img class="work-image hidden" alt=""><video class="work-video hidden" muted autoplay loop playsinline></video></div>
+        <div class="work-thumb"><div class="thumb-placeholder">WORK 03<br>썸네일 이미지를 넣어주세요</div><img class="work-image hidden" alt="작품 썸네일"><video class="work-video hidden" controls playsinline preload="metadata"></video></div>
         <div class="work-meta"><span contenteditable="true" data-edit>COMMERCIAL</span><span contenteditable="true" data-edit>2026</span></div>
         <h3 contenteditable="true" data-edit>Project Title 03</h3><p contenteditable="true" data-edit>광고 영상 또는 브랜드 콘텐츠의 설명을 적어주세요.</p>
-        <div class="media-actions"><label class="upload-label">＋ 미디어 넣기<input type="file" class="work-upload" accept="image/*,video/*"></label><button class="small-btn delete-work">카드 삭제</button></div>
+        <div class="media-actions"><button type="button" class="small-btn delete-work">카드 삭제</button></div>
       </article>
       <article class="work-card" data-category="editing">
-        <div class="work-thumb"><div class="thumb-placeholder">WORK 04<br>이미지 / 영상 넣기</div><img class="work-image hidden" alt=""><video class="work-video hidden" muted autoplay loop playsinline></video></div>
+        <div class="work-thumb"><div class="thumb-placeholder">WORK 04<br>썸네일 이미지를 넣어주세요</div><img class="work-image hidden" alt="작품 썸네일"><video class="work-video hidden" controls playsinline preload="metadata"></video></div>
         <div class="work-meta"><span contenteditable="true" data-edit>VIDEO EDITING</span><span contenteditable="true" data-edit>2026</span></div>
         <h3 contenteditable="true" data-edit>Project Title 04</h3><p contenteditable="true" data-edit>이곳에 작품 설명을 적어주세요.</p>
-        <div class="media-actions"><label class="upload-label">＋ 미디어 넣기<input type="file" class="work-upload" accept="image/*,video/*"></label><button class="small-btn delete-work">카드 삭제</button></div>
+        <div class="media-actions"><button type="button" class="small-btn delete-work">카드 삭제</button></div>
       </article>
     </div>
     <div class="footer"><span contenteditable="true" data-edit>YOUR NAME — VIDEO EDITOR / MOTION DESIGNER</span><span contenteditable="true" data-edit>THANK YOU FOR WATCHING ↗</span></div>
@@ -323,10 +326,10 @@
 
 <template id="workTemplate">
   <article class="work-card" data-category="editing">
-    <div class="work-thumb"><div class="thumb-placeholder">NEW WORK<br>이미지 / 영상 넣기</div><img class="work-image hidden" alt=""><video class="work-video hidden" muted autoplay loop playsinline></video></div>
+    <div class="work-thumb"><div class="thumb-placeholder">NEW WORK<br>썸네일 이미지를 넣어주세요</div><img class="work-image hidden" alt="작품 썸네일"><video class="work-video hidden" controls playsinline preload="metadata"></video></div>
     <div class="work-meta"><span contenteditable="true" data-edit>VIDEO EDITING</span><span contenteditable="true" data-edit>2026</span></div>
     <h3 contenteditable="true" data-edit>New Project</h3><p contenteditable="true" data-edit>작품 설명을 입력하세요.</p>
-    <div class="media-actions"><label class="upload-label">＋ 미디어 넣기<input type="file" class="work-upload" accept="image/*,video/*"></label><button class="small-btn delete-work">카드 삭제</button></div>
+    <div class="media-actions"><button type="button" class="small-btn delete-work">카드 삭제</button></div>
   </article>
 </template>
 
@@ -372,7 +375,7 @@
     const data = [...$$('[data-edit]')].map(el => el.innerHTML);
     localStorage.setItem('portfolioText_v1', JSON.stringify(data));
     const keyedText={};$$('[data-edit][data-style-id]').forEach(el=>keyedText[el.dataset.styleId]=el.innerHTML);localStorage.setItem('portfolioText_v2',JSON.stringify(keyedText));
-    localStorage.setItem('portfolioWorks_v1', $('#worksGrid').innerHTML);
+    const savedWorks=$('#worksGrid').cloneNode(true);savedWorks.querySelectorAll('[data-media-key]').forEach(el=>el.removeAttribute('src'));localStorage.setItem('portfolioWorks_v1', savedWorks.innerHTML);
     const refs={}; $$('[data-media-key]').forEach(el=>{const card=el.closest('.work-card');const selector=el.classList.contains('brief-file')?'.brief-file':el.classList.contains('work-image')?'.work-image':el.classList.contains('work-video')?'.work-video':el.id;const ref=card?`${card.dataset.cardId}|${selector}`:`global|${el.id}`;refs[ref]=el.dataset.mediaKey;});localStorage.setItem('portfolioMediaRefs_v1',JSON.stringify(refs));
     localStorage.setItem('portfolioElementStyles_v1',JSON.stringify(elementStyles));
     localStorage.setItem('portfolioLayout_v1',JSON.stringify(layoutPositions));
@@ -470,21 +473,31 @@
     const done=()=>{document.body.classList.remove('dragging-layout');document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',done);document.removeEventListener('pointercancel',done);saveText(true);};
     document.addEventListener('pointermove',move);document.addEventListener('pointerup',done,{once:true});document.addEventListener('pointercancel',done,{once:true});
   });
-  function openVideo(src) { const modal=$('#videoModal'),v=$('#modalVideo');$('#modalFrame').classList.add('hidden');$('#modalFrame').removeAttribute('src');$('#modalImage').classList.add('hidden');v.classList.remove('hidden');v.src=src; modal.classList.remove('hidden'); v.play().catch(()=>{}); }
-  function openYouTube(videoId) { const frame=$('#modalFrame'),v=$('#modalVideo');v.pause();v.removeAttribute('src');v.load();v.classList.add('hidden');$('#modalImage').classList.add('hidden');frame.src=`https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?autoplay=1&rel=0`;frame.classList.remove('hidden');$('#videoModal').classList.remove('hidden'); }
+  function openVideo(src) { const modal=$('#videoModal'),v=$('#modalVideo');$('#modalFrame').classList.add('hidden');$('#modalFrame').removeAttribute('src');$('#modalImage').classList.add('hidden');v.classList.remove('hidden');v.src=src;modal.classList.remove('hidden');v.load();v.play().catch(()=>{}); }
+  function openYouTube(videoId) { const frame=$('#modalFrame'),v=$('#modalVideo');v.pause();v.removeAttribute('src');v.load();v.classList.add('hidden');$('#modalImage').classList.add('hidden');frame.src=`https://www.youtube.com/embed/${encodeURIComponent(videoId)}?autoplay=1&rel=0`;frame.classList.remove('hidden');$('#videoModal').classList.remove('hidden'); }
+  function openExternalVideo(value) {
+    let url;try{url=new URL(value,location.href);}catch(e){return false;}if(!['http:','https:'].includes(url.protocol))return false;
+    const host=url.hostname.toLowerCase().replace(/^www\./,'');let id='';
+    if(host==='youtu.be')id=url.pathname.split('/').filter(Boolean)[0]||'';
+    else if(host==='youtube.com'||host==='m.youtube.com'||host==='youtube-nocookie.com')id=url.searchParams.get('v')||url.pathname.match(/\/(?:embed|shorts|live)\/([^/?]+)/)?.[1]||'';
+    if(id){openYouTube(id);return true;}
+    if(host==='vimeo.com'||host==='player.vimeo.com'){id=url.pathname.split('/').filter(Boolean).pop()||'';if(/^\d+$/.test(id)){const frame=$('#modalFrame'),v=$('#modalVideo');v.pause();v.removeAttribute('src');v.load();v.classList.add('hidden');$('#modalImage').classList.add('hidden');frame.src=`https://player.vimeo.com/video/${id}?autoplay=1`;frame.classList.remove('hidden');$('#videoModal').classList.remove('hidden');return true;}}
+    if(/\.(mp4|webm|ogg)(?:$|\?)/i.test(url.pathname+url.search)){openVideo(url.href);return true;}return false;
+  }
   function openImage(src) { const modal=$('#videoModal'),v=$('#modalVideo'),img=$('#modalImage');v.pause();v.removeAttribute('src');v.load();v.classList.add('hidden');$('#modalFrame').classList.add('hidden');$('#modalFrame').removeAttribute('src');img.src=src;img.classList.remove('hidden');modal.classList.remove('hidden'); }
-  function closeVideo() { const v=$('#modalVideo'),frame=$('#modalFrame');v.pause();v.removeAttribute('src');v.load();frame.removeAttribute('src');frame.classList.add('hidden');$('#modalImage').removeAttribute('src');$('#modalImage').classList.add('hidden');v.classList.remove('hidden');$('#videoModal').classList.add('hidden'); }
+  function closeVideo() { const v=$('#modalVideo'),frame=$('#modalFrame');v.pause();v.removeAttribute('src');v.load();frame.removeAttribute('src');frame.classList.add('hidden');$('#modalImage').removeAttribute('src');$('#modalImage').classList.add('hidden');v.classList.add('hidden');$('#videoModal').classList.add('hidden'); }
   async function deleteCardMedia(card) { for(const el of $$('.work-image,.work-video,.brief-file',card)) if(el.dataset.mediaKey){ const db=await dbPromise;db.transaction('files','readwrite').objectStore('files').delete(el.dataset.mediaKey); } }
   async function restoreMedia() {
-    for(const el of $$('[data-media-key]')) { const file=await loadMedia(el.dataset.mediaKey).catch(()=>null); if(!file)continue;
+    for(const el of $$('[data-media-key]')) { el.removeAttribute('src');if(el.tagName==='VIDEO'){el.pause();el.classList.add('hidden');}const file=await loadMedia(el.dataset.mediaKey).catch(()=>null); if(!file)continue;
       el.src=URL.createObjectURL(file); objectUrls.push(el.src);
       if(el.id==='resumeLink') {el.href=el.src;}
       else if(el.classList.contains('brief-file')) {el.href=el.src;el.classList.remove('hidden');el.textContent='PDF 기획서 보기 ↗';}
       else if(el.id==='profileImage') {el.classList.remove('hidden');$('#aboutImage').src=el.src;}
       else if(el.id==='backgroundVideo') {el.classList.remove('hidden');$('#profileImage').classList.add('hidden');el.load();}
-      else if(el.id==='showreelVideo') {el.classList.remove('hidden');$('#showreelImage').classList.add('hidden');$('#showreelPlaceholder').classList.add('hidden');el.load();}
-      else if(el.id==='showreelImage') {el.classList.remove('hidden');$('#showreelVideo').classList.add('hidden');$('#showreelPlaceholder').classList.add('hidden');}
-      else if(el.classList.contains('work-video')||el.classList.contains('work-image')) {el.classList.remove('hidden');$('.thumb-placeholder',el.closest('.work-card')).classList.add('hidden');if(el.tagName==='VIDEO')el.load();}
+      else if(el.id==='showreelVideo') {el.classList.add('hidden');el.load();}
+      else if(el.id==='showreelImage') {el.classList.remove('hidden');$('#showreelPlaceholder').classList.add('hidden');}
+      else if(el.classList.contains('work-video')) {el.classList.add('hidden');el.load();}
+      else if(el.classList.contains('work-image')) {el.classList.remove('hidden');$('.thumb-placeholder',el.closest('.work-card')).classList.add('hidden');}
       else if(el.classList.contains('custom-media')) {el.classList.remove('hidden');if(el.tagName==='VIDEO')el.load();}
     }
   }
@@ -496,27 +509,28 @@
     try { await storeMedia(key, file); } catch(err) { alert('미디어 저장에 실패했습니다. 파일 크기를 확인해주세요.'); }
     saveText(true);
   }
+  async function clearLocalMedia(element) {
+    if(element.dataset.mediaKey){const db=await dbPromise;await new Promise(resolve=>{const tx=db.transaction('files','readwrite');tx.objectStore('files').delete(element.dataset.mediaKey);tx.oncomplete=resolve;tx.onerror=resolve;});delete element.dataset.mediaKey;}
+    if(element.tagName==='VIDEO'){element.pause();element.removeAttribute('src');element.load();}else element.removeAttribute('src');
+  }
   $('#profileUpload').addEventListener('change', e => {
     const f = e.target.files[0]; if (f) {setLocalMedia(f, $('#profileImage'));$('#aboutImage').src=$('#profileImage').src;}
   });
   $('#backgroundUpload').addEventListener('change', e => { const f=e.target.files[0]; if(f){ const v=$('#backgroundVideo'); setLocalMedia(f,v); v.classList.remove('hidden'); $('#profileImage').classList.add('hidden'); v.load(); } });
   $('#showreelUpload').addEventListener('change', e => {
-    const f = e.target.files[0]; if (!f) return;
-    const v = $('#showreelVideo'); setLocalMedia(f, v);
-    v.classList.remove('hidden'); $('#showreelImage').classList.add('hidden');$('#showreelPlaceholder').classList.add('hidden');
-    v.load();
+    const f = e.target.files[0]; if (!f) return;if(!f.type.startsWith('video/')){alert('영상 파일을 선택해주세요.');e.target.value='';return;}
+    const v = $('#showreelVideo');clearLocalMedia(v).then(()=>{setLocalMedia(f,v);v.classList.add('hidden');v.load();});
   });
-  $('#showreelImageUpload').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const img=$('#showreelImage'),v=$('#showreelVideo');v.pause();v.removeAttribute('src');v.load();v.classList.add('hidden');img.classList.remove('hidden');$('#showreelPlaceholder').classList.add('hidden');setLocalMedia(f,img);});
+  $('#showreelImageUpload').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;if(!f.type.startsWith('image/')){alert('이미지 파일을 선택해주세요.');e.target.value='';return;}const img=$('#showreelImage');clearLocalMedia(img).then(()=>{img.classList.remove('hidden');$('#showreelPlaceholder').classList.add('hidden');setLocalMedia(f,img);});});
   $('#aboutImageUpload').addEventListener('change',e=>{const f=e.target.files[0];if(f)setLocalMedia(f,$('#aboutImage'));});
   $('#removeShowreel').addEventListener('click', () => {
-    const v = $('#showreelVideo'); v.pause(); v.removeAttribute('src'); v.load();
-    ['showreelVideo','showreelImage'].forEach(id=>{const el=$('#'+id),key=el.dataset.mediaKey;if(key)dbPromise.then(db=>db.transaction('files','readwrite').objectStore('files').delete(key));el.removeAttribute('data-media-key');});
-    $('#showreelImage').removeAttribute('src');
-    v.classList.add('hidden');$('#showreelImage').classList.add('hidden'); $('#showreelPlaceholder').classList.remove('hidden'); $('#showreelUpload').value='';$('#showreelImageUpload').value='';
-    saveText(true);
+    Promise.all([clearLocalMedia($('#showreelVideo')),clearLocalMedia($('#showreelImage'))]).then(()=>{const v=$('#showreelVideo'),img=$('#showreelImage');v.classList.add('hidden');img.classList.add('hidden');$('#showreelPlaceholder').classList.remove('hidden');$('#showreelUpload').value='';$('#showreelImageUpload').value='';saveText(true);});
   });
   function wireWorkCard(card) {
     if (!card.dataset.cardId) {const index=$$('.work-card',$('#worksGrid')).indexOf(card);card.dataset.cardId=index>=0?'work-'+String(index+1).padStart(2,'0'):'card-'+crypto.randomUUID();}
+    const actions=$('.media-actions',card);const oldUpload=$('.work-upload',card);if(oldUpload)oldUpload.closest('label')?.remove();
+    if(!$('.work-image-upload-input',card)){const label=document.createElement('label');label.className='upload-label work-media-upload';label.append('＋ 썸네일 이미지');const input=document.createElement('input');input.type='file';input.accept='image/*';input.className='work-image-upload-input';label.append(input);actions.prepend(label);}
+    if(!$('.work-video-upload-input',card)){const label=document.createElement('label');label.className='upload-label work-media-upload';label.append('＋ 영상 파일');const input=document.createElement('input');input.type='file';input.accept='video/*';input.className='work-video-upload-input';label.append(input);actions.insertBefore(label,actions.querySelector('.delete-work')||null);}
     if (!$('.work-links',card)) { const links=document.createElement('div');links.className='work-links';links.innerHTML='<a href="#" class="brief-file hidden" target="_blank" rel="noopener">PDF 기획서 보기 ↗</a><a href="#" class="external-link hidden" target="_blank" rel="noopener">외부 링크 ↗</a>'; $('.work-meta',card).after(links); }
     $('.brief-link',card)?.remove();
     if (!$('.brief-file',card)) {const a=document.createElement('a');a.href='#';a.target='_blank';a.rel='noopener';a.className='brief-file hidden';a.textContent='PDF 기획서 보기 ↗';$('.work-links',card).prepend(a);}
@@ -526,32 +540,23 @@
     $('.set-links',card).textContent='외부 URL 설정';
     const thumb = $('.work-thumb',card);
     if(card.dataset.youtubeId&&!$('.work-image',card).dataset.mediaKey){const image=$('.work-image',card);image.src=`https://img.youtube.com/vi/${card.dataset.youtubeId}/hqdefault.jpg`;image.classList.remove('hidden');$('.thumb-placeholder',card).classList.add('hidden');}
-    if (!$('.play-center',thumb)) { const play=document.createElement('span');play.className='play-center';play.setAttribute('aria-hidden','true');play.textContent='▶';thumb.appendChild(play); }
-    thumb.addEventListener('click', () => { if(editing)return;const video=$('.work-video',card),image=$('.work-image',card);if(card.dataset.youtubeId)openYouTube(card.dataset.youtubeId);else if(!video.classList.contains('hidden') && video.src) openVideo(video.currentSrc || video.src);else if(!image.classList.contains('hidden')&&image.src)openImage(image.currentSrc||image.src); });
+    let play=$('.play-center',thumb);if(!play||play.tagName!=='BUTTON'){const button=document.createElement('button');button.type='button';button.className='play-center';button.setAttribute('aria-label','작품 영상 재생');button.textContent='▶';if(play)play.replaceWith(button);else thumb.appendChild(button);play=button;}
+    play.addEventListener('click',e=>{e.stopPropagation();if(editing)return;const video=$('.work-video',card),external=$('.external-link',card);if(video.dataset.mediaKey&&video.src){openVideo(video.currentSrc||video.src);return;}if(external?.dataset.url&&external.dataset.url!==card.dataset.youtubeUrl&&openExternalVideo(external.dataset.url))return;if(card.dataset.youtubeId){openYouTube(card.dataset.youtubeId);return;}if(external?.dataset.url&&openExternalVideo(external.dataset.url))return;alert('먼저 썸네일과 영상 파일을 등록하거나 YouTube/Vimeo 영상 링크를 설정해주세요.');});
     $('.set-links',card)?.addEventListener('click', () => {
       const externalLink=$('.external-link',card);
       const external=prompt('외부 URL (없으면 비워두세요)', externalLink.dataset.url || (externalLink.getAttribute('href')==='#'?'':externalLink.getAttribute('href'))); if(external===null)return;
       externalLink.dataset.url=external;externalLink.href=safeUrl(external);externalLink.classList.toggle('hidden',!external);saveText();
     });
     $('.brief-upload',card).addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;if(file.type!=='application/pdf'&&!file.name.toLowerCase().endsWith('.pdf')){alert('PDF 파일만 업로드할 수 있어요.');e.target.value='';return;}const a=$('.brief-file',card);a.classList.remove('hidden');a.textContent=file.name+' ↗';setLocalMedia(file,a);});
-    $('.work-upload', card).addEventListener('change', e => {
-      const f = e.target.files[0]; if (!f) return;
-      const img = $('.work-image', card), video = $('.work-video', card), ph = $('.thumb-placeholder', card);
-      if (f.type.startsWith('video/')) {
-        img.classList.add('hidden'); video.classList.remove('hidden'); setLocalMedia(f, video); video.load();
-      } else {
-        video.pause(); video.removeAttribute('src'); video.classList.add('hidden');
-        img.classList.remove('hidden'); setLocalMedia(f, img);
-      }
-      ph.classList.add('hidden');
-    });
+    $('.work-image-upload-input',card).addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;if(!f.type.startsWith('image/')){alert('이미지 파일을 선택해주세요.');e.target.value='';return;}const img=$('.work-image',card);await clearLocalMedia(img);img.classList.remove('hidden');$('.thumb-placeholder',card).classList.add('hidden');await setLocalMedia(f,img);});
+    $('.work-video-upload-input',card).addEventListener('change',async e=>{const f=e.target.files[0];if(!f)return;if(!f.type.startsWith('video/')){alert('영상 파일을 선택해주세요.');e.target.value='';return;}const video=$('.work-video',card);await clearLocalMedia(video);video.classList.add('hidden');await setLocalMedia(f,video);video.load();});
     $('.delete-work', card).addEventListener('click', async () => { await deleteCardMedia(card); card.remove(); saveText(true); });
   }
   restoreText();
   restoreCustomElements();
   function ensureYouTubeWork(){
     const videoId='VGhzvkrxFuA';let card=$(`[data-card-id="youtube-work-${videoId}"]`);
-    if(!card){card=document.createElement('article');card.className='work-card';card.dataset.category='editing';card.dataset.cardId=`youtube-work-${videoId}`;card.innerHTML='<div class="work-thumb"><div class="thumb-placeholder">YOUTUBE WORK</div><img class="work-image hidden" alt="YouTube 작품 썸네일"><video class="work-video hidden" muted autoplay loop playsinline></video></div><div class="work-meta"><span contenteditable="true" data-edit>VIDEO WORK</span><span contenteditable="true" data-edit>YOUTUBE</span></div><h3 contenteditable="true" data-edit>YouTube 작품</h3><p contenteditable="true" data-edit>영상 제목과 작품 설명을 입력하세요.</p><div class="media-actions"><label class="upload-label">＋ 미디어 넣기<input type="file" class="work-upload" accept="image/*,video/*"></label><button class="small-btn delete-work">카드 삭제</button></div>';$('#worksGrid').prepend(card);}
+    if(!card){card=document.createElement('article');card.className='work-card';card.dataset.category='editing';card.dataset.cardId=`youtube-work-${videoId}`;card.innerHTML='<div class="work-thumb"><div class="thumb-placeholder">YOUTUBE WORK</div><img class="work-image hidden" alt="YouTube 작품 썸네일"><video class="work-video hidden" controls playsinline preload="metadata"></video></div><div class="work-meta"><span contenteditable="true" data-edit>VIDEO WORK</span><span contenteditable="true" data-edit>YOUTUBE</span></div><h3 contenteditable="true" data-edit>YouTube 작품</h3><p contenteditable="true" data-edit>영상 제목과 작품 설명을 입력하세요.</p><div class="media-actions"><button type="button" class="small-btn delete-work">카드 삭제</button></div>';$('#worksGrid').prepend(card);}
     card.dataset.youtubeId=videoId;card.dataset.youtubeUrl=`https://youtu.be/${videoId}`;
   }
   ensureYouTubeWork();
@@ -597,8 +602,7 @@
   $('#restoreHidden').addEventListener('click',()=>{$$('[data-layout-id].user-hidden').forEach(el=>{hiddenElements[el.dataset.layoutId]=false;el.classList.remove('user-hidden');});saveText(true);});
   $('#elementIcon').addEventListener('input',e=>{const target=selectedLayoutElement?.matches('.skill-chip i')?selectedLayoutElement:selectedLayoutElement?.closest('.skill-chip')?.querySelector('i');if(!editing||!target)return;target.textContent=e.target.value;iconStyles[target.dataset.layoutId]=e.target.value;saveText(true);});
   $('#clearSelectedIcon').addEventListener('click',()=>{const target=selectedLayoutElement?.matches('.skill-chip i')?selectedLayoutElement:selectedLayoutElement?.closest('.skill-chip')?.querySelector('i');if(!editing||!target){alert('편집 모드에서 삭제할 스킬 아이콘을 먼저 선택해주세요.');return;}target.textContent='';iconStyles[target.dataset.layoutId]='';$('#elementIcon').value='';saveText(true);});
-  $('#showreelPlay').addEventListener('click',e=>{e.stopPropagation();const v=$('#showreelVideo'),img=$('#showreelImage');if(!v.classList.contains('hidden')&&v.src)openVideo(v.currentSrc||v.src);else if(!img.classList.contains('hidden')&&img.src)openImage(img.currentSrc||img.src);else alert('먼저 쇼릴 이미지나 영상을 업로드해주세요.');});
-  $('#showreelFrame').addEventListener('click',e=>{if(editing||e.target.id==='showreelPlay')return;const v=$('#showreelVideo'),img=$('#showreelImage');if(!v.classList.contains('hidden')&&v.src)openVideo(v.currentSrc||v.src);else if(!img.classList.contains('hidden')&&img.src)openImage(img.currentSrc||img.src);});
+  $('#showreelPlay').addEventListener('click',e=>{e.stopPropagation();if(editing)return;const v=$('#showreelVideo'),external=$('#showreelExternal');if(v.dataset.mediaKey&&v.src)openVideo(v.currentSrc||v.src);else if(external.dataset.url&&openExternalVideo(external.dataset.url))return;else alert('먼저 쇼릴 썸네일과 영상 파일을 등록하거나 YouTube/Vimeo 영상 링크를 설정해주세요.');});
   $('#showreelLinkSet').addEventListener('click',()=>{const url=prompt('쇼릴 외부 영상 URL을 입력하세요', $('#showreelExternal').dataset.url||'');if(url===null)return;$('#showreelExternal').dataset.url=url;$('#showreelExternal').href=safeUrl(url);$('#showreelExternal').classList.toggle('hidden',!url);persistSettings();});
   $('#showreelWidth').addEventListener('input',e=>{const value=e.target.value;$('.showreel-wrap').style.width=value+'%';$('#showreelWidthValue').textContent=value+'%';persistSettings();});
   $('#showreelHeight').addEventListener('input',e=>{const value=e.target.value;$('#showreelFrame').style.height=value+'vh';$('#showreelFrame').style.aspectRatio='auto';$('#showreelHeightValue').textContent=value+'vh';persistSettings();});
