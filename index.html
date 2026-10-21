@@ -309,6 +309,7 @@
   <label>선택 모션 <select id="elementMotion"><option value="none">없음</option><option value="float">Floating</option><option value="blink">Blink</option><option value="slide">Slide</option><option value="pulse">Pulse</option><option value="spin">Spin</option></select></label>
   <label>선택 속도 <input id="elementSpeed" type="range" min="1" max="8" value="3"><span id="elementSpeedValue">3초</span></label>
   <label>선택 아이콘 <input id="elementIcon" type="text" maxlength="8" placeholder="이모지 / 기호"></label>
+  <button class="small-btn" id="clearSelectedIcon" type="button">선택 아이콘 삭제</button>
   <button class="small-btn" id="deleteSelected" type="button">선택 요소 삭제</button>
   <hr><strong>요소 추가</strong>
   <label>종류 <select id="addElementType"><option value="text">텍스트</option><option value="image">이미지</option><option value="video">영상</option><option value="button">링크 버튼</option><option value="skill">툴·스킬</option></select></label>
@@ -448,7 +449,7 @@
     });
     const containers=$$('.work-card,.work-thumb,.work-image,.work-video,.brief-file,.external-link,.video-frame,.play-center,.about-card,.skill-chip,.skill-chip i,.skill-chip b,.hero-content,.hero-bottom,.works-title,.showreel-wrap,.footer,.media-actions,.upload-label,.small-btn,.filters button,.nav a,.work-controls > *,#aboutImage,#showreelImage,.thumb-placeholder,.work-meta span,.showreel-size-controls,.custom-element,.custom-media,.custom-button');
     const seen=new Map();containers.forEach(el=>{if(!el.dataset.layoutId){const section=el.closest('.page')?.id||'site',cls=[...el.classList].find(c=>c!=='hidden')||el.tagName;const key=section+'-'+cls;const n=seen.get(key)||0;seen.set(key,n+1);el.dataset.layoutId=el.closest('.work-card')?`${el.closest('.work-card').dataset.cardId}-${cls}`:`${key}-${n}`;}});
-    $$('[data-layout-id]').forEach(el=>{const pos=layoutPositions[el.dataset.layoutId];if(pos){el.style.setProperty('--drag-x',pos.x+'px');el.style.setProperty('--drag-y',pos.y+'px');}el.classList.toggle('user-hidden',!!hiddenElements[el.dataset.layoutId]);if(el.matches('.skill-chip i')&&iconStyles[el.dataset.layoutId])el.textContent=iconStyles[el.dataset.layoutId];});
+    $$('[data-layout-id]').forEach(el=>{const pos=layoutPositions[el.dataset.layoutId];if(pos){el.style.setProperty('--drag-x',pos.x+'px');el.style.setProperty('--drag-y',pos.y+'px');}el.classList.toggle('user-hidden',!!hiddenElements[el.dataset.layoutId]);if(el.matches('.skill-chip i')&&Object.prototype.hasOwnProperty.call(iconStyles,el.dataset.layoutId))el.textContent=iconStyles[el.dataset.layoutId];});
   }
   function tagUserText(root=document){
     const selector='h1,h2,h3,p,.eyebrow,.hero-bottom span,.nav a,.filters button,.thumb-placeholder,.work-meta span,.about-card strong,.skill-chip b,.footer span,.work-links a,#showreelExternal,#resumeLink,.placeholder div:not(.note)';
@@ -581,6 +582,7 @@
   $('#addElement').addEventListener('click',addCustomElement);
   $('#restoreHidden').addEventListener('click',()=>{$$('[data-layout-id].user-hidden').forEach(el=>{hiddenElements[el.dataset.layoutId]=false;el.classList.remove('user-hidden');});saveText(true);});
   $('#elementIcon').addEventListener('input',e=>{const target=selectedLayoutElement?.matches('.skill-chip i')?selectedLayoutElement:selectedLayoutElement?.closest('.skill-chip')?.querySelector('i');if(!editing||!target)return;target.textContent=e.target.value;iconStyles[target.dataset.layoutId]=e.target.value;saveText(true);});
+  $('#clearSelectedIcon').addEventListener('click',()=>{const target=selectedLayoutElement?.matches('.skill-chip i')?selectedLayoutElement:selectedLayoutElement?.closest('.skill-chip')?.querySelector('i');if(!editing||!target){alert('편집 모드에서 삭제할 스킬 아이콘을 먼저 선택해주세요.');return;}target.textContent='';iconStyles[target.dataset.layoutId]='';$('#elementIcon').value='';saveText(true);});
   $('#showreelPlay').addEventListener('click',e=>{e.stopPropagation();const v=$('#showreelVideo'),img=$('#showreelImage');if(!v.classList.contains('hidden')&&v.src)openVideo(v.currentSrc||v.src);else if(!img.classList.contains('hidden')&&img.src)openImage(img.currentSrc||img.src);else alert('먼저 쇼릴 이미지나 영상을 업로드해주세요.');});
   $('#showreelFrame').addEventListener('click',e=>{if(editing||e.target.id==='showreelPlay')return;const v=$('#showreelVideo'),img=$('#showreelImage');if(!v.classList.contains('hidden')&&v.src)openVideo(v.currentSrc||v.src);else if(!img.classList.contains('hidden')&&img.src)openImage(img.currentSrc||img.src);});
   $('#showreelLinkSet').addEventListener('click',()=>{const url=prompt('쇼릴 외부 영상 URL을 입력하세요', $('#showreelExternal').dataset.url||'');if(url===null)return;$('#showreelExternal').dataset.url=url;$('#showreelExternal').href=safeUrl(url);$('#showreelExternal').classList.toggle('hidden',!url);persistSettings();});
