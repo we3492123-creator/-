@@ -72,6 +72,10 @@
   .skill-chip { display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;min-width:124px;min-height:118px;padding:14px;border:1px solid #ffffff25;background:#ffffff08;text-align:center; }
   .skill-chip i { font-style:normal;font-size:26px;line-height:1; }
   .skill-chip b { font:12px/1.2 var(--site-font,Arial),sans-serif; }
+  .custom-elements { display:flex;flex-wrap:wrap;align-items:flex-start;gap:18px;margin-top:22px; }
+  .custom-element { max-width:min(100%,720px);padding:12px;border:1px dashed #ffffff30;background:#ffffff05; }
+  .custom-element p { margin:0; }
+  .custom-media { display:block;max-width:min(100%,720px);max-height:70vh;object-fit:contain;border-radius:16px;background:#111; }
   body.editing [data-edit] { touch-action:pan-y; }
   body.editing [data-edit]:hover { outline:1px dashed #d4c6a7; }
   body.editing .work-card,body.editing .work-thumb,body.editing .about-card { cursor:grab; }
@@ -305,7 +309,10 @@
   <label>선택 모션 <select id="elementMotion"><option value="none">없음</option><option value="float">Floating</option><option value="blink">Blink</option><option value="slide">Slide</option><option value="pulse">Pulse</option><option value="spin">Spin</option></select></label>
   <label>선택 속도 <input id="elementSpeed" type="range" min="1" max="8" value="3"><span id="elementSpeedValue">3초</span></label>
   <label>선택 아이콘 <input id="elementIcon" type="text" maxlength="8" placeholder="이모지 / 기호"></label>
-  <button class="small-btn" id="deleteSelected" type="button">선택 요소 숨기기</button>
+  <button class="small-btn" id="deleteSelected" type="button">선택 요소 삭제</button>
+  <hr><strong>요소 추가</strong>
+  <label>종류 <select id="addElementType"><option value="text">텍스트</option><option value="image">이미지</option><option value="video">영상</option><option value="button">링크 버튼</option><option value="skill">툴·스킬</option></select></label>
+  <button class="small-btn" id="addElement" type="button">＋ 현재 페이지에 추가</button>
 </div>
 <div class="modal hidden" id="videoModal" role="dialog" aria-modal="true"><div class="modal-content"><button class="modal-close" id="closeModal">✕ 닫기</button><video id="modalVideo" controls playsinline></video><img id="modalImage" class="hidden" alt="확대 이미지"></div></div>
 
@@ -366,6 +373,7 @@
     localStorage.setItem('portfolioLayout_v1',JSON.stringify(layoutPositions));
     localStorage.setItem('portfolioHidden_v1',JSON.stringify(hiddenElements));
     localStorage.setItem('portfolioIcons_v1',JSON.stringify(iconStyles));
+    const custom={};$$('.custom-elements').forEach(layer=>custom[layer.dataset.pageId]=layer.innerHTML);localStorage.setItem('portfolioCustomElements_v1',JSON.stringify(custom));
     localStorage.setItem('portfolioSettings_v1', JSON.stringify(readSettings()));
     if(!silent) alert('텍스트와 설정을 이 브라우저에 저장했어요. 미디어는 IndexedDB에 보관됩니다.');
   }
@@ -377,6 +385,21 @@
     const markup=localStorage.getItem('portfolioWorks_v1'); if(markup) $('#worksGrid').innerHTML=markup;
     try { const refs=JSON.parse(localStorage.getItem('portfolioMediaRefs_v1')||'{}'); Object.entries(refs).forEach(([ref,key])=>{const [cardId,selector]=ref.split('|');const el=cardId==='global'?document.getElementById(selector):$(`[data-card-id="${cardId}"] ${selector}`);if(el)el.dataset.mediaKey=key;}); }catch(e){}
     try { const settings=JSON.parse(localStorage.getItem('portfolioSettings_v1')||'{}'); if(settings.font)$('#fontSetting').value=settings.font; if(settings.speed)$('#motionSpeed').value=settings.speed; } catch(e){}
+  }
+  function restoreCustomElements(){
+    let saved={};try{saved=JSON.parse(localStorage.getItem('portfolioCustomElements_v1')||'{}');}catch(e){}
+    $$('.page').forEach(page=>{const layer=document.createElement('div');layer.className='custom-elements';layer.dataset.pageId=page.id;page.appendChild(layer);layer.innerHTML=saved[page.id]||'';});
+    $$('.custom-media-upload').forEach(input=>input.addEventListener('change',e=>{const file=e.target.files[0],media=e.target.closest('.custom-element')?.querySelector('.custom-media');if(file&&media){media.classList.remove('hidden');setLocalMedia(file,media);if(media.tagName==='VIDEO')media.load();}}));
+  }
+  function addCustomElement(){
+    const page=selectedLayoutElement?.closest('.page')||$('#works'),layer=$('.custom-elements',page),type=$('#addElementType').value,id='custom-'+crypto.randomUUID();
+    const el=document.createElement('div');el.className='custom-element rounded-box';el.dataset.customId=id;el.dataset.layoutId=id;
+    if(type==='text'){el.innerHTML='<p data-edit contenteditable="true">새 텍스트를 입력하세요.</p>';}
+    if(type==='image'||type==='video'){const tag=type==='image'?'img':'video';el.innerHTML=`<${tag} class="custom-media hidden" ${type==='video'?'controls playsinline':''} alt="추가 미디어"><label class="upload-label">＋ ${type==='image'?'이미지':'영상'} 업로드<input class="custom-media-upload" type="file" accept="${type}/*"></label>`;}
+    if(type==='button'){el.innerHTML='<a class="small-btn custom-button" href="#" target="_blank" rel="noopener" data-edit contenteditable="true">링크 버튼</a>';const url=prompt('버튼으로 연결할 URL을 입력하세요','https://');if(url===null)return;$('.custom-button',el).href=safeUrl(url);}
+    if(type==='skill'){el.innerHTML='<span class="skill-chip"><i data-edit contenteditable="true">✦</i><b data-edit contenteditable="true">새 스킬</b></span>';}
+    layer.appendChild(el);const upload=$('.custom-media-upload',el);if(upload)upload.addEventListener('change',e=>{const file=e.target.files[0],media=$('.custom-media',el);if(file){media.classList.remove('hidden');setLocalMedia(file,media);if(media.tagName==='VIDEO')media.load();}});
+    setupEditableElements();if(editing)setEditMode(true);saveText(true);
   }
   function safeUrl(value) { if(!value)return '#'; try { const u=new URL(value,location.href); return ['http:','https:','mailto:'].includes(u.protocol)?u.href:'#'; } catch(e){return '#';} }
   function readSettings(){return {font:$('#fontSetting').value,speed:$('#motionSpeed').value,motion:$('#motionType').value,text:$('#textColor').value,bg:$('#backgroundColor').value,showreelUrl:$('#showreelExternal').dataset.url||'',showreelWidth:$('#showreelWidth').value,showreelHeight:$('#showreelHeight').value};}
@@ -423,7 +446,7 @@
       applyElementStyle(el,elementStyles[el.dataset.styleId]||{});
       if(!styledElements.has(el)){el.addEventListener('click',()=>selectEditable(el));styledElements.add(el);}
     });
-    const containers=$$('.work-card,.work-thumb,.work-image,.work-video,.brief-file,.external-link,.video-frame,.play-center,.about-card,.skill-chip,.skill-chip i,.skill-chip b,.hero-content,.hero-bottom,.works-title,.showreel-wrap,.footer,.media-actions,.upload-label,.small-btn,.filters button,.nav a,.work-controls > *,#aboutImage,#showreelImage,.thumb-placeholder,.work-meta span,.showreel-size-controls');
+    const containers=$$('.work-card,.work-thumb,.work-image,.work-video,.brief-file,.external-link,.video-frame,.play-center,.about-card,.skill-chip,.skill-chip i,.skill-chip b,.hero-content,.hero-bottom,.works-title,.showreel-wrap,.footer,.media-actions,.upload-label,.small-btn,.filters button,.nav a,.work-controls > *,#aboutImage,#showreelImage,.thumb-placeholder,.work-meta span,.showreel-size-controls,.custom-element,.custom-media,.custom-button');
     const seen=new Map();containers.forEach(el=>{if(!el.dataset.layoutId){const section=el.closest('.page')?.id||'site',cls=[...el.classList].find(c=>c!=='hidden')||el.tagName;const key=section+'-'+cls;const n=seen.get(key)||0;seen.set(key,n+1);el.dataset.layoutId=el.closest('.work-card')?`${el.closest('.work-card').dataset.cardId}-${cls}`:`${key}-${n}`;}});
     $$('[data-layout-id]').forEach(el=>{const pos=layoutPositions[el.dataset.layoutId];if(pos){el.style.setProperty('--drag-x',pos.x+'px');el.style.setProperty('--drag-y',pos.y+'px');}el.classList.toggle('user-hidden',!!hiddenElements[el.dataset.layoutId]);if(el.matches('.skill-chip i')&&iconStyles[el.dataset.layoutId])el.textContent=iconStyles[el.dataset.layoutId];});
   }
@@ -455,6 +478,7 @@
       else if(el.id==='showreelVideo') {el.classList.remove('hidden');$('#showreelImage').classList.add('hidden');$('#showreelPlaceholder').classList.add('hidden');el.load();}
       else if(el.id==='showreelImage') {el.classList.remove('hidden');$('#showreelVideo').classList.add('hidden');$('#showreelPlaceholder').classList.add('hidden');}
       else if(el.classList.contains('work-video')||el.classList.contains('work-image')) {el.classList.remove('hidden');$('.thumb-placeholder',el.closest('.work-card')).classList.add('hidden');if(el.tagName==='VIDEO')el.load();}
+      else if(el.classList.contains('custom-media')) {el.classList.remove('hidden');if(el.tagName==='VIDEO')el.load();}
     }
   }
   async function setLocalMedia(file, element) {
@@ -515,6 +539,7 @@
     $('.delete-work', card).addEventListener('click', async () => { await deleteCardMedia(card); card.remove(); saveText(true); });
   }
   restoreText();
+  restoreCustomElements();
   $$('.work-card').forEach(wireWorkCard);
   setupEditableElements();
   restoreKeyedText();
@@ -552,7 +577,8 @@
   $('#elementColor').addEventListener('input',e=>updateSelectedStyle('color',e.target.value));
   $('#elementMotion').addEventListener('change',e=>updateSelectedStyle('motion',e.target.value));
   $('#elementSpeed').addEventListener('input',e=>updateSelectedStyle('speed',e.target.value));
-  $('#deleteSelected').addEventListener('click',()=>{const el=selectedLayoutElement;if(!editing||!el){alert('편집 모드에서 숨기거나 복원할 요소를 먼저 선택해주세요.');return;}const id=el.dataset.layoutId;hiddenElements[id]=!hiddenElements[id];el.classList.toggle('user-hidden',hiddenElements[id]);$('#deleteSelected').textContent=hiddenElements[id]?'선택 요소 복원':'선택 요소 숨기기';saveText(true);});
+  $('#deleteSelected').addEventListener('click',()=>{const el=selectedLayoutElement;if(!editing||!el){alert('편집 모드에서 삭제할 요소를 먼저 선택해주세요.');return;}const custom=el.closest('.custom-element');if(custom){custom.remove();selectedElement=null;selectedLayoutElement=null;}else{const id=el.dataset.layoutId;hiddenElements[id]=true;el.classList.add('user-hidden');}saveText(true);});
+  $('#addElement').addEventListener('click',addCustomElement);
   $('#restoreHidden').addEventListener('click',()=>{$$('[data-layout-id].user-hidden').forEach(el=>{hiddenElements[el.dataset.layoutId]=false;el.classList.remove('user-hidden');});saveText(true);});
   $('#elementIcon').addEventListener('input',e=>{const target=selectedLayoutElement?.matches('.skill-chip i')?selectedLayoutElement:selectedLayoutElement?.closest('.skill-chip')?.querySelector('i');if(!editing||!target)return;target.textContent=e.target.value;iconStyles[target.dataset.layoutId]=e.target.value;saveText(true);});
   $('#showreelPlay').addEventListener('click',e=>{e.stopPropagation();const v=$('#showreelVideo'),img=$('#showreelImage');if(!v.classList.contains('hidden')&&v.src)openVideo(v.currentSrc||v.src);else if(!img.classList.contains('hidden')&&img.src)openImage(img.currentSrc||img.src);else alert('먼저 쇼릴 이미지나 영상을 업로드해주세요.');});
