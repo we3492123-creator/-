@@ -389,7 +389,8 @@
   }
   function restoreCustomElements(){
     let saved={};try{saved=JSON.parse(localStorage.getItem('portfolioCustomElements_v1')||'{}');}catch(e){}
-    $$('.page').forEach(page=>{const layer=document.createElement('div');layer.className='custom-elements';layer.dataset.pageId=page.id;page.appendChild(layer);layer.innerHTML=saved[page.id]||'';});
+    $$('.page').forEach(page=>{const layer=document.createElement('div');layer.className='custom-elements';layer.dataset.pageId=page.id;page.appendChild(layer);layer.innerHTML=saved[page.id]||'';layer.querySelectorAll('.custom-element .skill-chip').forEach(chip=>{if(chip.querySelector('b')?.textContent.trim()==='새 스킬')chip.closest('.custom-element')?.remove();});saved[page.id]=layer.innerHTML;});
+    localStorage.setItem('portfolioCustomElements_v1',JSON.stringify(saved));
     $$('.custom-media-upload').forEach(input=>input.addEventListener('change',e=>{const file=e.target.files[0],media=e.target.closest('.custom-element')?.querySelector('.custom-media');if(file&&media){media.classList.remove('hidden');setLocalMedia(file,media);if(media.tagName==='VIDEO')media.load();}}));
   }
   function addCustomElement(){
