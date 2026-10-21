@@ -34,6 +34,13 @@
   .motion-text { animation:floatText var(--motion-speed,3s) ease-in-out infinite alternate; }
   @keyframes floatText { to { transform:translateY(-10px); letter-spacing:.015em; } }
   .about-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:30px; }
+  .about-layout { display:grid;grid-template-columns:minmax(260px,.85fr) minmax(0,1.25fr);gap:clamp(28px,6vw,88px);align-items:start; }
+  .about-photo-wrap { min-height:580px;position:sticky;top:90px; }
+  .about-photo { display:block;width:100%;height:min(72vh,720px);min-height:520px;object-fit:cover;border-radius:26px;background:linear-gradient(145deg,#60656a,#17191b); }
+  .about-copy { min-width:0;padding-top:16px; }
+  .about-copy > .eyebrow { margin-bottom:10px; }
+  .skills-area { margin-top:42px; }
+  .skills-area h3 { font:clamp(24px,3vw,38px)/1.1 var(--site-font,Georgia),serif;margin-bottom:14px; }
   .about-card { border:1px solid #414044;background:#ffffff08;padding:22px;min-height:135px; }
   .about-card strong { display:block;font:10px monospace;color:#aaa;margin-bottom:16px;letter-spacing:.12em; }
   .about-card [data-edit] { min-height:24px;display:block; }
@@ -52,6 +59,7 @@
   .settings-panel hr { width:100%;border:0;border-top:1px solid #444; }
   #selectedElementName { color:#c8bca8;font-size:10px; }
   .rounded-box,.work-thumb,.video-frame,.about-card,.upload-label,.small-btn,.tool-btn,.play-center,.modal-content,.work-controls,.skill-chip { border-radius:16px; }
+  .user-hidden { display:none !important; }
   .play-center { border-radius:50%; }
   .showreel-layout { display:grid;grid-template-columns:minmax(250px,.75fr) minmax(0,1.8fr);align-items:center;gap:clamp(28px,6vw,90px); }
   #showreel .section-head { display:block;margin:0; }
@@ -60,15 +68,15 @@
   #showreel .section-head p { max-width:430px; }
   #showreel .showreel-wrap { width:100%;margin:0; }
   .skill-list { display:flex;flex-wrap:wrap;gap:12px;margin-top:18px; }
-  .skill-chip { display:inline-flex;align-items:center;gap:10px;padding:12px 16px;border:1px solid #ffffff25;background:#ffffff08; }
-  .skill-chip i { font-style:normal;font-size:20px; }
+  .skill-chip { display:inline-flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;min-width:124px;min-height:118px;padding:14px;border:1px solid #ffffff25;background:#ffffff08;text-align:center; }
+  .skill-chip i { font-style:normal;font-size:26px;line-height:1; }
   .skill-chip b { font:12px/1.2 var(--site-font,Arial),sans-serif; }
   body.editing [data-edit] { touch-action:pan-y; }
   body.editing [data-edit]:hover { outline:1px dashed #d4c6a7; }
   body.editing .work-card,body.editing .work-thumb,body.editing .about-card { cursor:grab; }
   body.editing.dragging-layout { user-select:none;cursor:grabbing; }
   [data-layout-id] { translate:var(--drag-x,0px) var(--drag-y,0px); }
-  @media (max-width:850px) { .showreel-layout { grid-template-columns:1fr;gap:28px; } }
+  @media (max-width:850px) { .showreel-layout { grid-template-columns:1fr;gap:28px; } .about-layout { grid-template-columns:1fr; } .about-photo-wrap { position:relative;top:auto;min-height:0; } .about-photo { height:55vw;min-height:260px;max-height:520px; } }
   .play-center { position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;border:1px solid #ffffffb0;background:#080808a8;color:#fff;display:grid;place-items:center;font-size:22px;backdrop-filter:blur(8px); }
   .video-frame { cursor:pointer; }
   .motion-blink { animation:blinkMotion var(--motion-speed,3s) ease-in-out infinite alternate; }
@@ -244,6 +252,9 @@
 </main>
 
 <section class="page" id="about">
+ <div class="about-layout">
+  <div class="about-photo-wrap"><img id="aboutImage" class="about-photo" alt="프로필 이미지"></div>
+  <div class="about-copy">
   <div class="eyebrow" contenteditable="true" data-edit>04 / ABOUT & CONTACT</div><h2 contenteditable="true" data-edit>About Me</h2>
   <p contenteditable="true" data-edit>영상의 흐름과 움직임으로 브랜드와 사람의 이야기를 전합니다. ✦</p>
   <div class="about-grid">
@@ -259,6 +270,8 @@
     <span class="skill-chip"><i aria-hidden="true">📹</i><b contenteditable="true" data-edit>Color Grading</b></span>
     <span class="skill-chip"><i aria-hidden="true">✂️</i><b contenteditable="true" data-edit>Story Editing</b></span>
   </div></div>
+  </div>
+ </div>
 </section>
 <section class="page" id="thanks"><div><div class="eyebrow">✦ THANK YOU FOR YOUR TIME ✦</div><h2>Thank You.</h2><p>좋은 이야기를 함께 만들어요. ☺</p><a class="upload-label" href="#home">처음으로 ↑</a></div></section>
 
@@ -278,6 +291,7 @@
   <label>선택 색상 <input type="color" id="elementColor" value="#f4f1ec"></label>
   <label>선택 모션 <select id="elementMotion"><option value="none">없음</option><option value="float">Floating</option><option value="blink">Blink</option><option value="slide">Slide</option><option value="pulse">Pulse</option><option value="spin">Spin</option></select></label>
   <label>선택 속도 <input id="elementSpeed" type="range" min="1" max="8" value="3"><span id="elementSpeedValue">3초</span></label>
+  <button class="small-btn" id="deleteSelected" type="button">선택한 워크 요소 삭제</button>
 </div>
 <div class="modal hidden" id="videoModal" role="dialog" aria-modal="true"><div class="modal-content"><button class="modal-close" id="closeModal">✕ 닫기</button><video id="modalVideo" controls playsinline></video></div></div>
 
@@ -296,9 +310,11 @@
   const $$ = (s, root=document) => [...root.querySelectorAll(s)];
   let editing = false;
   let selectedElement = null;
+  let selectedLayoutElement = null;
   let objectUrls = [];
   let elementStyles = {};
   let layoutPositions = {};
+  let hiddenElements = {};
   const styledElements = new WeakSet();
   const dbPromise = new Promise((resolve, reject) => {
     const request = indexedDB.open('videoPortfolioMedia', 1);
@@ -328,10 +344,12 @@
   function saveText(silent=false) {
     const data = [...$$('[data-edit]')].map(el => el.innerHTML);
     localStorage.setItem('portfolioText_v1', JSON.stringify(data));
+    const keyedText={};$$('[data-edit][data-style-id]').forEach(el=>keyedText[el.dataset.styleId]=el.innerHTML);localStorage.setItem('portfolioText_v2',JSON.stringify(keyedText));
     localStorage.setItem('portfolioWorks_v1', $('#worksGrid').innerHTML);
     const refs={}; $$('[data-media-key]').forEach(el=>{const card=el.closest('.work-card');const selector=el.classList.contains('brief-file')?'.brief-file':el.classList.contains('work-image')?'.work-image':el.classList.contains('work-video')?'.work-video':`#${el.id}`;const ref=card?`${card.dataset.cardId}|${selector}`:`global|${el.id}`;refs[ref]=el.dataset.mediaKey;});localStorage.setItem('portfolioMediaRefs_v1',JSON.stringify(refs));
     localStorage.setItem('portfolioElementStyles_v1',JSON.stringify(elementStyles));
     localStorage.setItem('portfolioLayout_v1',JSON.stringify(layoutPositions));
+    localStorage.setItem('portfolioHidden_v1',JSON.stringify(hiddenElements));
     localStorage.setItem('portfolioSettings_v1', JSON.stringify(readSettings()));
     if(!silent) alert('텍스트와 설정을 이 브라우저에 저장했어요. 미디어는 IndexedDB에 보관됩니다.');
   }
@@ -367,6 +385,7 @@
   }
   function selectEditable(el){
     if(!editing||!el?.matches('[data-edit]'))return;selectedElement=el;
+    selectedLayoutElement=el;
     const id=el.dataset.styleId,style=elementStyles[id]||{};
     $('#selectedElementName').textContent=(el.textContent.trim().slice(0,34)||el.tagName)+' · '+id;
     $('#elementFont').value=style.font||'';$('#elementColor').value=style.color||'#f4f1ec';$('#elementMotion').value=style.motion||'none';$('#elementSpeed').value=style.speed||3;$('#elementSpeedValue').textContent=(style.speed||3)+'초';
@@ -375,6 +394,7 @@
   function setupEditableElements(){
     try{elementStyles=JSON.parse(localStorage.getItem('portfolioElementStyles_v1')||'{}');}catch(e){elementStyles={};}
     try{layoutPositions=JSON.parse(localStorage.getItem('portfolioLayout_v1')||'{}');}catch(e){layoutPositions={};}
+    try{hiddenElements=JSON.parse(localStorage.getItem('portfolioHidden_v1')||'{}');}catch(e){hiddenElements={};}
     const counts={};
     $$('[data-edit]').forEach(el=>{
       const card=el.closest('.work-card'),section=el.closest('.page'),scope=card?.dataset.cardId||section?.id||'site';
@@ -382,16 +402,18 @@
       applyElementStyle(el,elementStyles[el.dataset.styleId]||{});
       if(!styledElements.has(el)){el.addEventListener('click',()=>selectEditable(el));styledElements.add(el);}
     });
-    const containers=$$('.work-card,.work-thumb,.video-frame,.about-card,.skill-chip,.hero-content,.hero-bottom,.works-title,.showreel-wrap,.footer,.media-actions');
+    const containers=$$('.work-card,.work-thumb,.work-image,.work-video,.brief-file,.external-link,.video-frame,.about-card,.skill-chip,.hero-content,.hero-bottom,.works-title,.showreel-wrap,.footer,.media-actions,.upload-label,.small-btn,.filters button,.nav a,.work-controls > *,#aboutImage');
     const seen=new Map();containers.forEach(el=>{if(!el.dataset.layoutId){const section=el.closest('.page')?.id||'site',cls=[...el.classList].find(c=>c!=='hidden')||el.tagName;const key=section+'-'+cls;const n=seen.get(key)||0;seen.set(key,n+1);el.dataset.layoutId=el.closest('.work-card')?`${el.closest('.work-card').dataset.cardId}-${cls}`:`${key}-${n}`;}});
-    $$('[data-layout-id]').forEach(el=>{const pos=layoutPositions[el.dataset.layoutId];if(pos){el.style.setProperty('--drag-x',pos.x+'px');el.style.setProperty('--drag-y',pos.y+'px');}});
+    $$('[data-layout-id]').forEach(el=>{const pos=layoutPositions[el.dataset.layoutId];if(pos){el.style.setProperty('--drag-x',pos.x+'px');el.style.setProperty('--drag-y',pos.y+'px');}el.classList.toggle('user-hidden',!!hiddenElements[el.dataset.layoutId]);});
   }
+  function restoreKeyedText(){try{const saved=JSON.parse(localStorage.getItem('portfolioText_v2')||'{}');$$('[data-edit][data-style-id]').forEach(el=>{if(saved[el.dataset.styleId]!==undefined)el.innerHTML=saved[el.dataset.styleId];});}catch(e){}}
+  document.addEventListener('click',e=>{if(!editing)return;const el=e.target.closest('[data-layout-id]');if(!el)return;selectedLayoutElement=el;if(el.matches('[data-edit]'))selectEditable(el);else{$('#selectedElementName').textContent=(el.textContent.trim().slice(0,34)||el.className||el.tagName)+' · '+el.dataset.layoutId;selectedElement=null;}},true);
   document.addEventListener('pointerdown',e=>{
     if(!editing||!e.altKey)return;const el=e.target.closest('[data-layout-id]');if(!el)return;
     e.preventDefault();const id=el.dataset.layoutId,base=layoutPositions[id]||{x:0,y:0},sx=e.clientX,sy=e.clientY;
     document.body.classList.add('dragging-layout');
     const move=ev=>{const x=base.x+ev.clientX-sx,y=base.y+ev.clientY-sy;el.style.setProperty('--drag-x',x+'px');el.style.setProperty('--drag-y',y+'px');layoutPositions[id]={x,y};};
-    const done=()=>{document.body.classList.remove('dragging-layout');document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',done);saveText(true);};
+    const done=()=>{document.body.classList.remove('dragging-layout');document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',done);document.removeEventListener('pointercancel',done);saveText(true);};
     document.addEventListener('pointermove',move);document.addEventListener('pointerup',done,{once:true});document.addEventListener('pointercancel',done,{once:true});
   });
   function openVideo(src) { const modal=$('#videoModal'),v=$('#modalVideo'); v.src=src; modal.classList.remove('hidden'); v.play().catch(()=>{}); }
@@ -402,7 +424,7 @@
       el.src=URL.createObjectURL(file); objectUrls.push(el.src);
       if(el.id==='resumeLink') {el.href=el.src;el.textContent='이력서 열기 ↗';}
       else if(el.classList.contains('brief-file')) {el.href=el.src;el.classList.remove('hidden');el.textContent='PDF 기획서 보기 ↗';}
-      else if(el.id==='profileImage') {el.classList.remove('hidden');}
+      else if(el.id==='profileImage') {el.classList.remove('hidden');$('#aboutImage').src=el.src;}
       else if(el.id==='backgroundVideo') {el.classList.remove('hidden');$('#profileImage').classList.add('hidden');el.load();}
       else if(el.id==='showreelVideo') {el.classList.remove('hidden');$('#showreelPlaceholder').classList.add('hidden');el.load();}
       else if(el.classList.contains('work-video')||el.classList.contains('work-image')) {el.classList.remove('hidden');$('.thumb-placeholder',el.closest('.work-card')).classList.add('hidden');if(el.tagName==='VIDEO')el.load();}
@@ -417,7 +439,7 @@
     saveText(true);
   }
   $('#profileUpload').addEventListener('change', e => {
-    const f = e.target.files[0]; if (f) setLocalMedia(f, $('#profileImage'));
+    const f = e.target.files[0]; if (f) {setLocalMedia(f, $('#profileImage'));$('#aboutImage').src=$('#profileImage').src;}
   });
   $('#backgroundUpload').addEventListener('change', e => { const f=e.target.files[0]; if(f){ const v=$('#backgroundVideo'); setLocalMedia(f,v); v.classList.remove('hidden'); $('#profileImage').classList.add('hidden'); v.load(); } });
   $('#showreelUpload').addEventListener('change', e => {
@@ -440,7 +462,7 @@
     $('.set-links',card).textContent='외부 URL 설정';
     const thumb = $('.work-thumb',card);
     if (!$('.play-center',thumb)) { const play=document.createElement('span');play.className='play-center';play.setAttribute('aria-hidden','true');play.textContent='▶';thumb.appendChild(play); }
-    thumb.addEventListener('click', () => { const video=$('.work-video',card); if(!video.classList.contains('hidden') && video.src) openVideo(video.currentSrc || video.src); });
+    thumb.addEventListener('click', () => { if(editing)return;const video=$('.work-video',card); if(!video.classList.contains('hidden') && video.src) openVideo(video.currentSrc || video.src); });
     $('.set-links',card)?.addEventListener('click', () => {
       const externalLink=$('.external-link',card);
       const external=prompt('외부 URL (없으면 비워두세요)', externalLink.dataset.url || (externalLink.getAttribute('href')==='#'?'':externalLink.getAttribute('href'))); if(external===null)return;
@@ -463,6 +485,7 @@
   restoreText();
   $$('.work-card').forEach(wireWorkCard);
   setupEditableElements();
+  restoreKeyedText();
   $('#addWork').addEventListener('click', () => {
     const card = $('#workTemplate').content.firstElementChild.cloneNode(true);
     $('#worksGrid').appendChild(card); wireWorkCard(card);
@@ -475,7 +498,7 @@
   $('#topSave').addEventListener('click', saveText);
   $('#resetText').addEventListener('click', () => {
     if (confirm('저장된 텍스트, 작품 카드, 설정을 초기화할까요? 페이지를 새로고침하면 기본 구성으로 돌아갑니다.')) {
-      ['portfolioText_v1','portfolioWorks_v1','portfolioMediaRefs_v1','portfolioSettings_v1','portfolioElementStyles_v1','portfolioLayout_v1'].forEach(k=>localStorage.removeItem(k)); location.reload();
+      ['portfolioText_v1','portfolioText_v2','portfolioWorks_v1','portfolioMediaRefs_v1','portfolioSettings_v1','portfolioElementStyles_v1','portfolioLayout_v1','portfolioHidden_v1'].forEach(k=>localStorage.removeItem(k)); location.reload();
     }
   });
   $$('.filters button').forEach(btn => btn.addEventListener('click', () => {
@@ -496,11 +519,13 @@
   $('#elementColor').addEventListener('input',e=>updateSelectedStyle('color',e.target.value));
   $('#elementMotion').addEventListener('change',e=>updateSelectedStyle('motion',e.target.value));
   $('#elementSpeed').addEventListener('input',e=>updateSelectedStyle('speed',e.target.value));
+  $('#deleteSelected').addEventListener('click',()=>{const el=selectedLayoutElement;if(!editing||!el||!el.closest('#works')){alert('편집 모드에서 Works 섹션의 요소를 먼저 선택해주세요.');return;}const id=el.dataset.layoutId;hiddenElements[id]=true;el.classList.add('user-hidden');saveText(true);});
   $('#showreelPlay').addEventListener('click',e=>{e.stopPropagation();const v=$('#showreelVideo');if(!v.classList.contains('hidden')&&v.src)openVideo(v.currentSrc||v.src);else alert('먼저 쇼릴 영상을 업로드해주세요.');});
   $('#showreelFrame').addEventListener('click',e=>{if(e.target.id!=='showreelPlay'){const v=$('#showreelVideo');if(!v.classList.contains('hidden')&&v.src)openVideo(v.currentSrc||v.src);}});
   $('#showreelLinkSet').addEventListener('click',()=>{const url=prompt('쇼릴 외부 영상 URL을 입력하세요', $('#showreelExternal').dataset.url||'');if(url===null)return;$('#showreelExternal').dataset.url=url;$('#showreelExternal').href=safeUrl(url);$('#showreelExternal').classList.toggle('hidden',!url);persistSettings();});
   $('#closeModal').addEventListener('click',closeVideo);$('#videoModal').addEventListener('click',e=>{if(e.target.id==='videoModal')closeVideo();});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeVideo();});
   $('#resumeUpload').addEventListener('change',e=>{const f=e.target.files[0];if(f)setLocalMedia(f,$('#resumeLink'));});
+  $('#aboutImage').src=$('#profileImage').src;
   restoreMedia();
   try { applySettings(JSON.parse(localStorage.getItem('portfolioSettings_v1')||'{}')); }catch(e){}
   setEditMode(false);
