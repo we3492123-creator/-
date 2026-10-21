@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>PORTFOLIO — Video Editing & Motion Graphics</title>
 <style>
-  :root { --bg:#050505; --fg:#f4f1ec; --muted:#aaa7a1; --line:#292929; --accent:#e8e1d5; }
+  :root { --bg:#1f1e1e; --fg:#cdf11e; --muted:#aaa7a1; --line:#393737; --accent:#cdf11e; --site-font:Arial; }
   * { box-sizing:border-box; }
   html { scroll-behavior:smooth; }
   body { margin:0; background:var(--bg); color:var(--fg); font-family:Arial, "Noto Sans KR", sans-serif; }
@@ -48,10 +48,11 @@
   .modal-content { width:min(100%,1100px);position:relative; }
   .modal video { display:block;width:100%;max-height:82vh;background:#000; }
   .modal img { display:block;max-width:min(100%,1100px);max-height:82vh;object-fit:contain;margin:auto; }
+  .modal iframe { display:block;width:min(100%,1100px);aspect-ratio:16/9;border:0;background:#000;margin:auto; }
   .modal-close { position:absolute;right:0;bottom:calc(100% + 12px);border:1px solid #aaa;background:#111;color:#fff;padding:10px 14px; }
   .work-thumb { cursor:pointer; }
   .work-links { display:flex;gap:8px;flex-wrap:wrap;margin-top:10px; }
-  .work-links a { font:10px monospace;border-bottom:1px solid #777;padding:3px 0;color:#ddd; }
+  .work-links a { display:inline-flex;align-items:center;font:10px monospace;border:1px solid #555;border-radius:999px;padding:8px 12px;color:var(--fg); }
   .settings-panel { position:fixed;z-index:31;right:18px;bottom:68px;background:#151515;border:1px solid #555;padding:14px;display:grid;gap:10px;color:#eee;font:11px monospace; }
   .settings-panel { max-height:min(72vh,680px);overflow:auto;border-radius:18px; }
   .settings-panel label { display:flex;align-items:center;justify-content:space-between;gap:12px; }
@@ -160,12 +161,15 @@
   .modal-close { position:absolute;right:0;bottom:calc(100% + 12px);border:1px solid #aaa;background:#111;color:#fff;padding:10px 14px; }
   .work-thumb { cursor:pointer; }
   .work-links { display:flex;gap:8px;flex-wrap:wrap;margin-top:10px; }
-  .work-links a { font:10px monospace;border-bottom:1px solid #777;padding:3px 0;color:#ddd; }
+  .work-links a { display:inline-flex;align-items:center;font:10px monospace;border:1px solid #555;border-radius:999px;padding:8px 12px;color:var(--fg); }
   .settings-panel { position:fixed;z-index:31;right:18px;bottom:68px;background:#151515;border:1px solid #555;padding:14px;display:grid;gap:10px;color:#eee;font:11px monospace; }
   .settings-panel label { display:flex;align-items:center;justify-content:space-between;gap:12px; }
   .settings-panel select,.settings-panel input { color:#eee;background:#222;border:1px solid #555;padding:5px; }
   #thanks h2 { font-size:clamp(60px,12vw,150px); }
   .hidden { display:none !important; }
+  #showreel,#works,#about,#thanks { background-image:none;background-color:var(--bg); }
+  .eyebrow,.section-head p,.about-card strong,.hero-sub,.hero-bottom,.placeholder,.note,.filters,.filters button,.work-thumb .thumb-placeholder,.work-meta,.work-card p,.footer { color:var(--fg); }
+  .filters button.active { border-color:var(--fg); }
   @media (max-width:850px) { .works-grid { grid-template-columns:repeat(2,minmax(0,1fr)); } .section-head { align-items:start; flex-direction:column; } }
   @media (max-width:520px) { .topbar { padding:14px 4vw; } .nav { gap:12px; font-size:9px; } .brand { font-size:10px; } .page:not(.hero) { padding:90px 5vw 40px; } .hero-content { padding:20vh 7vw 12vh; } .hero-bottom { font-size:8px; } .works-grid { gap:22px 10px; } .work-card h3 { font-size:16px; } .footer { flex-direction:column; } }
 </style>
@@ -184,7 +188,7 @@
 <main>
   <!-- PAGE 01: 사진과 소개 문구를 바꾸세요. 사진은 아래 '사진 넣기' 버튼으로 업로드할 수 있습니다. -->
   <section class="page hero" id="home">
-    <div class="hero-media"><img id="profileImage" alt="프로필 배경 이미지" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 900'%3E%3Cdefs%3E%3ClinearGradient id='g' x2='1' y2='1'%3E%3Cstop stop-color='%23565c61'/%3E%3Cstop offset='1' stop-color='%23131518'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='1600' height='900' fill='url(%23g)'/%3E%3Ctext x='800' y='450' fill='%23bcbcbc' font-size='28' text-anchor='middle' font-family='Arial'%3EUPLOAD YOUR PHOTO%3C/text%3E%3C/svg%3E"><video id="backgroundVideo" class="hidden" muted autoplay loop playsinline></video></div>
+    <div class="hero-media"><img id="profileImage" alt="프로필 배경 이미지" src="./어바웃미.png"><video id="backgroundVideo" class="hidden" muted autoplay loop playsinline></video></div>
     <div class="hero-content">
       <div class="eyebrow" contenteditable="true" data-edit>VIDEO EDITING · MOTION GRAPHICS</div>
       <h1 class="motion-text" contenteditable="true" data-edit>Stories<br>in Motion.</h1>
@@ -270,7 +274,7 @@
 
 <section class="page" id="about">
  <div class="about-layout">
-  <div class="about-photo-wrap"><img id="aboutImage" class="about-photo" alt="프로필 이미지"><div class="about-photo-controls"><label class="upload-label">＋ 어바웃 이미지 변경<input id="aboutImageUpload" type="file" accept="image/*"></label></div></div>
+  <div class="about-photo-wrap"><img id="aboutImage" class="about-photo" alt="프로필 이미지" src="./어바웃미.png"><div class="about-photo-controls"><label class="upload-label">＋ 어바웃 이미지 변경<input id="aboutImageUpload" type="file" accept="image/*"></label></div></div>
   <div class="about-copy">
   <div class="eyebrow" contenteditable="true" data-edit>04 / ABOUT & CONTACT</div><h2 contenteditable="true" data-edit>About Me</h2>
   <p contenteditable="true" data-edit>영상의 흐름과 움직임으로 브랜드와 사람의 이야기를 전합니다. ✦</p>
@@ -300,8 +304,8 @@
 <div class="settings-panel hidden" id="settingsPanel">
   <label>웹폰트 <select id="fontSetting"><option value="Arial">Modern Sans</option><option value="Georgia">Editorial Serif</option><option value="'Noto Sans KR'">Noto Sans KR</option><option value="'Malgun Gothic'">맑은 고딕</option><option value="monospace">Mono</option><option value="'Courier New'">Typewriter</option><option value="'Trebuchet MS'">Soft Rounded</option><option value="'Palatino Linotype'">Classic Serif</option></select></label>
   <label>모션 종류 <select id="motionType"><option value="float">Floating</option><option value="blink">Blink</option><option value="slide">Slide</option><option value="pulse">Pulse</option><option value="spin">Spin</option><option value="none">없음</option></select></label>
-  <label>텍스트 색상 <input type="color" id="textColor" value="#f4f1ec"></label>
-  <label>배경 색상 <input type="color" id="backgroundColor" value="#050505"></label>
+  <label>텍스트 색상 <input type="color" id="textColor" value="#cdf11e"></label>
+  <label>배경 색상 <input type="color" id="backgroundColor" value="#1f1e1e"></label>
   <label>모션 속도 <input id="motionSpeed" type="range" min="1" max="8" value="3"> <span id="speedValue">3초</span></label>
   <hr><strong>선택 요소 스타일</strong><span id="selectedElementName">편집 모드에서 텍스트를 선택하세요</span>
   <label>선택 폰트 <select id="elementFont"><option value="">사이트 기본</option><option value="Arial">Modern Sans</option><option value="Georgia">Editorial Serif</option><option value="'Noto Sans KR'">Noto Sans KR</option><option value="'Malgun Gothic'">맑은 고딕</option><option value="monospace">Mono</option><option value="'Courier New'">Typewriter</option><option value="'Trebuchet MS'">Soft Rounded</option></select></label>
@@ -315,7 +319,7 @@
   <label>종류 <select id="addElementType"><option value="text">텍스트</option><option value="image">이미지</option><option value="video">영상</option><option value="button">링크 버튼</option><option value="skill">툴·스킬</option></select></label>
   <button class="small-btn" id="addElement" type="button">＋ 현재 페이지에 추가</button>
 </div>
-<div class="modal hidden" id="videoModal" role="dialog" aria-modal="true"><div class="modal-content"><button class="modal-close" id="closeModal">✕ 닫기</button><video id="modalVideo" controls playsinline></video><img id="modalImage" class="hidden" alt="확대 이미지"></div></div>
+<div class="modal hidden" id="videoModal" role="dialog" aria-modal="true"><div class="modal-content"><button class="modal-close" id="closeModal">✕ 닫기</button><video id="modalVideo" controls playsinline></video><iframe id="modalFrame" class="hidden" title="YouTube 작품 영상" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe><img id="modalImage" class="hidden" alt="확대 이미지"></div></div>
 
 <template id="workTemplate">
   <article class="work-card" data-category="editing">
@@ -466,9 +470,10 @@
     const done=()=>{document.body.classList.remove('dragging-layout');document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',done);document.removeEventListener('pointercancel',done);saveText(true);};
     document.addEventListener('pointermove',move);document.addEventListener('pointerup',done,{once:true});document.addEventListener('pointercancel',done,{once:true});
   });
-  function openVideo(src) { const modal=$('#videoModal'),v=$('#modalVideo');$('#modalImage').classList.add('hidden');v.classList.remove('hidden');v.src=src; modal.classList.remove('hidden'); v.play().catch(()=>{}); }
-  function openImage(src) { const modal=$('#videoModal'),v=$('#modalVideo'),img=$('#modalImage');v.pause();v.removeAttribute('src');v.load();v.classList.add('hidden');img.src=src;img.classList.remove('hidden');modal.classList.remove('hidden'); }
-  function closeVideo() { const v=$('#modalVideo');v.pause();v.removeAttribute('src');v.load();$('#modalImage').removeAttribute('src');$('#modalImage').classList.add('hidden');v.classList.remove('hidden');$('#videoModal').classList.add('hidden'); }
+  function openVideo(src) { const modal=$('#videoModal'),v=$('#modalVideo');$('#modalFrame').classList.add('hidden');$('#modalFrame').removeAttribute('src');$('#modalImage').classList.add('hidden');v.classList.remove('hidden');v.src=src; modal.classList.remove('hidden'); v.play().catch(()=>{}); }
+  function openYouTube(videoId) { const frame=$('#modalFrame'),v=$('#modalVideo');v.pause();v.removeAttribute('src');v.load();v.classList.add('hidden');$('#modalImage').classList.add('hidden');frame.src=`https://www.youtube-nocookie.com/embed/${encodeURIComponent(videoId)}?autoplay=1&rel=0`;frame.classList.remove('hidden');$('#videoModal').classList.remove('hidden'); }
+  function openImage(src) { const modal=$('#videoModal'),v=$('#modalVideo'),img=$('#modalImage');v.pause();v.removeAttribute('src');v.load();v.classList.add('hidden');$('#modalFrame').classList.add('hidden');$('#modalFrame').removeAttribute('src');img.src=src;img.classList.remove('hidden');modal.classList.remove('hidden'); }
+  function closeVideo() { const v=$('#modalVideo'),frame=$('#modalFrame');v.pause();v.removeAttribute('src');v.load();frame.removeAttribute('src');frame.classList.add('hidden');$('#modalImage').removeAttribute('src');$('#modalImage').classList.add('hidden');v.classList.remove('hidden');$('#videoModal').classList.add('hidden'); }
   async function deleteCardMedia(card) { for(const el of $$('.work-image,.work-video,.brief-file',card)) if(el.dataset.mediaKey){ const db=await dbPromise;db.transaction('files','readwrite').objectStore('files').delete(el.dataset.mediaKey); } }
   async function restoreMedia() {
     for(const el of $$('[data-media-key]')) { const file=await loadMedia(el.dataset.mediaKey).catch(()=>null); if(!file)continue;
@@ -516,11 +521,13 @@
     $('.brief-link',card)?.remove();
     if (!$('.brief-file',card)) {const a=document.createElement('a');a.href='#';a.target='_blank';a.rel='noopener';a.className='brief-file hidden';a.textContent='PDF 기획서 보기 ↗';$('.work-links',card).prepend(a);}
     if (!$('.brief-upload',card)) {const label=document.createElement('label');label.className='upload-label';label.textContent='PDF 기획서 업로드';const input=document.createElement('input');input.type='file';input.accept='application/pdf,.pdf';input.className='brief-upload';label.appendChild(input);$('.work-links',card).appendChild(label);}
+    if(card.dataset.youtubeUrl){const link=$('.external-link',card);link.dataset.url=card.dataset.youtubeUrl;link.href=safeUrl(card.dataset.youtubeUrl);link.textContent='YouTube에서 보기 ↗';link.classList.remove('hidden');}
     if (!$('.set-links',card)) { const b=document.createElement('button');b.className='small-btn set-links';b.textContent='외부 URL 설정';$('.media-actions',card).append(b); }
     $('.set-links',card).textContent='외부 URL 설정';
     const thumb = $('.work-thumb',card);
+    if(card.dataset.youtubeId&&!$('.work-image',card).dataset.mediaKey){const image=$('.work-image',card);image.src=`https://img.youtube.com/vi/${card.dataset.youtubeId}/hqdefault.jpg`;image.classList.remove('hidden');$('.thumb-placeholder',card).classList.add('hidden');}
     if (!$('.play-center',thumb)) { const play=document.createElement('span');play.className='play-center';play.setAttribute('aria-hidden','true');play.textContent='▶';thumb.appendChild(play); }
-    thumb.addEventListener('click', () => { if(editing)return;const video=$('.work-video',card),image=$('.work-image',card); if(!video.classList.contains('hidden') && video.src) openVideo(video.currentSrc || video.src);else if(!image.classList.contains('hidden')&&image.src)openImage(image.currentSrc||image.src); });
+    thumb.addEventListener('click', () => { if(editing)return;const video=$('.work-video',card),image=$('.work-image',card);if(card.dataset.youtubeId)openYouTube(card.dataset.youtubeId);else if(!video.classList.contains('hidden') && video.src) openVideo(video.currentSrc || video.src);else if(!image.classList.contains('hidden')&&image.src)openImage(image.currentSrc||image.src); });
     $('.set-links',card)?.addEventListener('click', () => {
       const externalLink=$('.external-link',card);
       const external=prompt('외부 URL (없으면 비워두세요)', externalLink.dataset.url || (externalLink.getAttribute('href')==='#'?'':externalLink.getAttribute('href'))); if(external===null)return;
@@ -542,6 +549,12 @@
   }
   restoreText();
   restoreCustomElements();
+  function ensureYouTubeWork(){
+    const videoId='VGhzvkrxFuA';let card=$(`[data-card-id="youtube-work-${videoId}"]`);
+    if(!card){card=document.createElement('article');card.className='work-card';card.dataset.category='editing';card.dataset.cardId=`youtube-work-${videoId}`;card.innerHTML='<div class="work-thumb"><div class="thumb-placeholder">YOUTUBE WORK</div><img class="work-image hidden" alt="YouTube 작품 썸네일"><video class="work-video hidden" muted autoplay loop playsinline></video></div><div class="work-meta"><span contenteditable="true" data-edit>VIDEO WORK</span><span contenteditable="true" data-edit>YOUTUBE</span></div><h3 contenteditable="true" data-edit>YouTube 작품</h3><p contenteditable="true" data-edit>영상 제목과 작품 설명을 입력하세요.</p><div class="media-actions"><label class="upload-label">＋ 미디어 넣기<input type="file" class="work-upload" accept="image/*,video/*"></label><button class="small-btn delete-work">카드 삭제</button></div>';$('#worksGrid').prepend(card);}
+    card.dataset.youtubeId=videoId;card.dataset.youtubeUrl=`https://youtu.be/${videoId}`;
+  }
+  ensureYouTubeWork();
   $$('.work-card').forEach(wireWorkCard);
   setupEditableElements();
   restoreKeyedText();
